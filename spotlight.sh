@@ -12,6 +12,7 @@ then
 	   echo "/opt/spotlight/$LANG http://0.0.0.0:80/rest/"
      java -Dfile.encoding=UTF-8 -Xmx10G -jar /opt/spotlight/dbpedia-spotlight.jar /opt/spotlight/models/$LANG http://0.0.0.0:80/rest
 else
+      cd $DIRECTORY
       QUERY="PREFIX dataid: <http://dataid.dbpedia.org/ns/core#>
       PREFIX dataid-cv: <http://dataid.dbpedia.org/ns/cv#>
       PREFIX dct: <http://purl.org/dc/terms/>
