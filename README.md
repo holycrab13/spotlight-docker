@@ -35,7 +35,7 @@ The following are the instructions to run a DBpedia Spotlight service for one or
 2. build docker image
     
         cd multilingual-databus
-        docker build -t dbpedia/spotlight-multilingual-databus
+        docker build -t dbpedia/dbpedia-spotlight
 
 3. Run docker image
 
@@ -44,7 +44,7 @@ The following are the instructions to run a DBpedia Spotlight service for one or
         --name dbpedia-spotlight.[LANG] \
         --mount source=spotlight-models,target=/opt/spotlight \
         -p 2222:80 \
-        dbpedia/spotlight-multilingual-databus \
+        dbpedia/dbpedia-spotlight \
         spotlight.sh [LANG]      
 
   Where [LANG] is a two-digit code to define the language model to be run e.g., en, de, it.
