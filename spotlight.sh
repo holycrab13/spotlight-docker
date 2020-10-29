@@ -38,6 +38,6 @@ else
       curl -O  $RESULT
       tar -C /opt/spotlight/ -xvf spotlight-model_lang=$LANG.tar.gz
       rm spotlight-model_lang=$LANG.tar.gz
-      echo "/opt/spotlight/$LANG http://0.0.0.0:80/rest/"
+      echo "/opt/spotlight/models/$LANG http://0.0.0.0:80/rest/"
       java -Dfile.encoding=UTF-8 -Xmx10G -jar /opt/spotlight/dbpedia-spotlight.jar /opt/spotlight/models/$LANG http://0.0.0.0:80/rest
 fi
