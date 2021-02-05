@@ -9,8 +9,14 @@ DIRECTORY=/opt/spotlight/models/$LANG
 echo "Selected language: $LANG"
 if [ -d "$DIRECTORY" ]
 then
-	   echo "/opt/spotlight/$LANG http://0.0.0.0:80/rest/"
-     java -Dfile.encoding=UTF-8 -Xmx10G -jar /opt/spotlight/dbpedia-spotlight.jar /opt/spotlight/models/$LANG http://0.0.0.0:80/rest
+     echo "/opt/spotlight/$LANG http://0.0.0.0:80/rest/"
+     if [[ $LANG == "en" ]]
+     then
+	 java -Dfile.encoding=UTF-8 -Xmx15G -jar /opt/spotlight/dbpedia-spotlight.jar /opt/spotlight/models/$LANG http://0.0.0.0:80/rest
+     else
+	 java -Dfile.encoding=UTF-8 -Xmx10G -jar /opt/spotlight/dbpedia-spotlight.jar /opt/spotlight/models/$LANG http://0.0.0.0:80/rest
+     fi
+
 else
       QUERY="PREFIX dataid: <http://dataid.dbpedia.org/ns/core#>
       PREFIX dataid-cv: <http://dataid.dbpedia.org/ns/cv#>
@@ -39,5 +45,11 @@ else
       tar -C /opt/spotlight/models -xvf spotlight-model_lang=$LANG.tar.gz
       rm spotlight-model_lang=$LANG.tar.gz
       echo "/opt/spotlight/models/$LANG http://0.0.0.0:80/rest/"
-      java -Dfile.encoding=UTF-8 -Xmx10G -jar /opt/spotlight/dbpedia-spotlight.jar /opt/spotlight/models/$LANG http://0.0.0.0:80/rest
+      if [[ $LANG == "en" ]]
+      then
+	java -Dfile.encoding=UTF-8 -Xmx15G -jar /opt/spotlight/dbpedia-spotlight.jar /opt/spotlight/models/$LANG http://0.0.0.0:80/rest
+       else
+	 java -Dfile.encoding=UTF-8 -Xmx10G -jar /opt/spotlight/dbpedia-spotlight.jar /opt/spotlight/models/$LANG http://0.0.0.0:80/rest
+      fi
+
 fi
