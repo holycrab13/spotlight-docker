@@ -23,9 +23,9 @@ RUN mkdir -p /opt/spotlight/models && \
 # adding the script to the container
 ADD spotlight.sh /bin/spotlight.sh
 #ADD dbpedia-spotlight.jar /opt/spotlight/dbpedia-spotlight.jar
-RUN chmod +x /bin/spotlight.sh && \
-    chown root:root /opt/spotlight/models/dbpedia-spotlight.jar && \
-    chown -R root:root /opt/spotlight/models/src
+RUN chmod +x /bin/spotlight.sh 
+#    chown root:root /opt/spotlight/models/dbpedia-spotlight.jar && \
+#    chown -R root:root /opt/spotlight/models/src
 
 #RUN chmod +x /opt/spotlight/dbpedia-spotlight.jar
 EXPOSE 80
