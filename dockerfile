@@ -16,7 +16,7 @@ RUN mkdir -p /opt/spotlight/models && \
    # cd /opt/spotlight/models && \
    cd /opt/spotlight && \
    #wget -O dbpedia-spotlight.tar.gz $SPOTLIGHT && \
-   wget -O dbpedia-spotlight.jar
+   wget -O dbpedia-spotlight.jar $SPOTLIGHT
    #tar -xvf dbpedia-spotlight.tar.gz && \
    #rm dbpedia-spotlight.tar.gz
 
