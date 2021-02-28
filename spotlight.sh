@@ -2,7 +2,7 @@
 
 LANG=$1
 
-MODELFOLDER=/opt/spotlight/models
+MODELFOLDER=/opt/spotlight
 cd $MODELFOLDER
 
 DIRECTORY=/opt/spotlight/models/$LANG
@@ -12,9 +12,9 @@ then
      echo "/opt/spotlight/$LANG http://0.0.0.0:80/rest/"
      if [[ $LANG == "en" ]]
      then
-	 java -Dfile.encoding=UTF-8 -Xmx15G -jar /opt/spotlight/models/dbpedia-spotlight.jar /opt/spotlight/models/$LANG http://0.0.0.0:80/rest
+	 java -Dfile.encoding=UTF-8 -Xmx15G -jar /opt/spotlight/dbpedia-spotlight.jar /opt/spotlight/models/$LANG http://0.0.0.0:80/rest
      else
-	 java -Dfile.encoding=UTF-8 -Xmx10G -jar /opt/spotlight/models/dbpedia-spotlight.jar /opt/spotlight/models/$LANG http://0.0.0.0:80/rest
+	 java -Dfile.encoding=UTF-8 -Xmx10G -jar /opt/spotlight/dbpedia-spotlight.jar /opt/spotlight/models/$LANG http://0.0.0.0:80/rest
      fi
 
 else
@@ -47,9 +47,9 @@ else
       echo "/opt/spotlight/models/$LANG http://0.0.0.0:80/rest/"
       if [[ $LANG == "en" ]]
       then
-	java -Dfile.encoding=UTF-8 -Xmx15G -jar /opt/spotlight/models/dbpedia-spotlight.jar /opt/spotlight/models/$LANG http://0.0.0.0:80/rest
+	java -Dfile.encoding=UTF-8 -Xmx15G -jar /opt/spotlight/dbpedia-spotlight.jar /opt/spotlight/models/$LANG http://0.0.0.0:80/rest
        else
-	 java -Dfile.encoding=UTF-8 -Xmx10G -jar /opt/spotlight/models/dbpedia-spotlight.jar /opt/spotlight/models/$LANG http://0.0.0.0:80/rest
+	 java -Dfile.encoding=UTF-8 -Xmx10G -jar /opt/spotlight/dbpedia-spotlight.jar /opt/spotlight/models/$LANG http://0.0.0.0:80/rest
       fi
 
 fi

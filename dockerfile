@@ -13,8 +13,8 @@ RUN apk update && \
 
 # downloading spolight model and dbpedia spotlight
 RUN mkdir -p /opt/spotlight/models && \ 
-   cd /opt/spotlight/models && \
-   #cd /opt/spotlight && \
+   #cd /opt/spotlight/models && \
+   cd /opt/spotlight && \
    wget -O dbpedia-spotlight.jar $SPOTLIGHT && \
    mkdir -p src/main/resources/templates/
    #wget -O dbpedia-spotlight.jar $SPOTLIGHT
