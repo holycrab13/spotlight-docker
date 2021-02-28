@@ -23,7 +23,7 @@ RUN mkdir -p /opt/spotlight/models && \
 
 # adding the script to the container
 ADD spotlight.sh /bin/spotlight.sh
-ADD nif-21.vm /opt/spotlight/models/src/main/resources/templates/nif-21.vm
+COPY nif-21.vm /opt/spotlight/src/main/resources/templates/nif-21.vm
 #ADD dbpedia-spotlight.jar /opt/spotlight/dbpedia-spotlight.jar
 RUN chmod +x /bin/spotlight.sh 
 #    chown root:root /opt/spotlight/models/dbpedia-spotlight.jar && \
