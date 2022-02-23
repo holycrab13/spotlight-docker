@@ -22,3 +22,4 @@ COPY nif-21.vm /opt/spotlight/src/main/resources/templates/nif-21.vm
 RUN chmod +x /bin/spotlight.sh 
 
 EXPOSE 80
+ENTRYPOINT [ "/bin/bash", "./bin/spotlight.sh" ]
