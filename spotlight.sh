@@ -1,55 +1,42 @@
-#!/bin/sh
+if [ -z ${NAME+x} ]; then NAME='en'; fi
+if [ -z ${MODEL_PATH+x} ]; then MODEL_PATH='/opt/spotlight/models'; fi
+if [ -z ${QUERY+x} ]; then QUERY='NONE'; fi
+if [ -z ${JAVA_PARAMS+x} ]; then JAVA_PARAMS=-Xmx15G; fi
 
-LANG=$1
+echo "========================================="
+echo "NAME is set to '$NAME'"; 
+echo "MODEL_PATH is set to '$MODEL_PATH'"; 
+echo "QUERY is set to '$QUERY'"; 
+echo "JAVA_PARAMS is set to '$JAVA_PARAMS'"; 
+echo "========================================="
 
-MODELFOLDER=/opt/spotlight
-cd $MODELFOLDER
+cd $MODEL_PATH
 
-DIRECTORY=/opt/spotlight/models/$LANG
-echo "Selected language: $LANG"
+DIRECTORY=$MODEL_PATH/$NAME
+
 if [ -d "$DIRECTORY" ]
 then
-     echo "/opt/spotlight/$LANG http://0.0.0.0:80/rest/"
-     if [[ $LANG == "en" ]]
-     then
-	 java -Dfile.encoding=UTF-8 -Xmx15G -jar /opt/spotlight/dbpedia-spotlight.jar /opt/spotlight/models/$LANG http://0.0.0.0:80/rest
-     else
-	 java -Dfile.encoding=UTF-8 -Xmx10G -jar /opt/spotlight/dbpedia-spotlight.jar /opt/spotlight/models/$LANG http://0.0.0.0:80/rest
-     fi
-
 else
-      QUERY="PREFIX dataid: <http://dataid.dbpedia.org/ns/core#>
-      PREFIX dataid-cv: <http://dataid.dbpedia.org/ns/cv#>
-      PREFIX dct: <http://purl.org/dc/terms/>
-      PREFIX dcat:  <http://www.w3.org/ns/dcat#>
+  # Create directory
+  mkdir $DIRECTORY;
+  
+  # Fetch the model file 
+  RESULT=`curl --data-urlencode query="$QUERY" --data-urlencode format="text/tab-separated-values" https://databus.dbpedia.org/repo/sparql | sed 's/"//g' | grep -v "^file$" | head -n 1 `
+  FILENAME=`echo "${RESULT##*/}"`
 
-      SELECT DISTINCT ?file WHERE {
- 	?dataset dataid:artifact <https://databus.dbpedia.org/dbpedia/spotlight/spotlight-model> .
-	?dataset dcat:distribution ?distribution .
-	{
-		?distribution dct:hasVersion ?latestVersion 
-		{
-			SELECT (?version as ?latestVersion) WHERE { 
-				?dataset dataid:artifact <https://databus.dbpedia.org/dbpedia/spotlight/spotlight-model> . 
-				?dataset dct:hasVersion ?version . 
-			} ORDER BY DESC (?version) LIMIT 1 
-		}
-                ?distribution dataid:contentVariant '$LANG'^^xsd:string . 
-	}
-	?distribution dcat:downloadURL ?file .
-       }"
+  # Run model download and extraction
+  wget $RESULT
+  mkdir $DIRECTORY;
+  tar -C $DIRECTORY -xvf $FILENAME
 
-      RESULT=`curl --data-urlencode query="$QUERY" --data-urlencode format="text/tab-separated-values" https://databus.dbpedia.org/repo/sparql | sed 's/"//g' | grep -v "^file$" | head -n 1 `
-      echo $RESULT
-      curl -O  $RESULT
-      tar -C /opt/spotlight/models -xvf spotlight-model_lang=$LANG.tar.gz
-      rm spotlight-model_lang=$LANG.tar.gz
-      echo "/opt/spotlight/models/$LANG http://0.0.0.0:80/rest/"
-      if [[ $LANG == "en" ]]
-      then
-	java -Dfile.encoding=UTF-8 -Xmx15G -jar /opt/spotlight/dbpedia-spotlight.jar /opt/spotlight/models/$LANG http://0.0.0.0:80/rest
-       else
-	 java -Dfile.encoding=UTF-8 -Xmx10G -jar /opt/spotlight/dbpedia-spotlight.jar /opt/spotlight/models/$LANG http://0.0.0.0:80/rest
-      fi
+  # Remove extra folder
+  TMP=`ls $DIRECTORY`
+  mv $TMP/* .
+  rm -r $TMP
 
+  # Remove the downloaded compressed model
+  rm $FILENAME
 fi
+
+echo "java -Dfile.encoding=UTF-8 $JAVA_PARAMS -jar /opt/spotlight/dbpedia-spotlight.jar $DIRECTORY http://0.0.0.0:80/rest"
+java -Dfile.encoding=UTF-8 $JAVA_PARAMS -jar /opt/spotlight/dbpedia-spotlight.jar $DIRECTORY http://0.0.0.0:80/rest
