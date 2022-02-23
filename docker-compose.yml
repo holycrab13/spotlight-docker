@@ -4,7 +4,7 @@ services:
     image: dbpedia/spotlight-for-databus
     container_name: dbpedia-spotlight.en
     environment:
-      NAME: test
+      NAME: en
       MODEL_PATH: /opt/spotlight/models
       QUERY: >
         PREFIX dataid: <http://dataid.dbpedia.org/ns/core#>
@@ -32,7 +32,7 @@ services:
                 } ORDER BY DESC (?version) LIMIT 1 
               }
             }
-            { ?distribution <http://dataid.dbpedia.org/ns/cv#lang> 'lt'^^<http://www.w3.org/2001/XMLSchema#string> . }
+            { ?distribution <http://dataid.dbpedia.org/ns/cv#lang> 'en'^^<http://www.w3.org/2001/XMLSchema#string> . }
           }
         }
     volumes:
