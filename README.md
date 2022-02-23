@@ -1,4 +1,10 @@
-# DBpedia Spotlight Docker
+# DBpedia Spotlight Docker for Databus
+
+Fork for more Databus interoperability
+Specify:
+* NAME
+* MODEL_PATH
+* QUERY
 
 **Table of contents**
 - [What is DBpedia Spotlight](#what-is-dbpedia-spotlight)
