@@ -11,28 +11,33 @@ echo "JAVA_PARAMS is set to '$JAVA_PARAMS'";
 echo "========================================="
 
 cd $MODEL_PATH
-
 DIRECTORY=$MODEL_PATH/$NAME
 
 if [ -d "$DIRECTORY" ]
 then
+  echo "$DIRECTORY exists. Reusing existing model from volume."
 else
-  # Create directory
-  mkdir $DIRECTORY;
   
   # Fetch the model file 
   RESULT=`curl --data-urlencode query="$QUERY" --data-urlencode format="text/tab-separated-values" https://databus.dbpedia.org/repo/sparql | sed 's/"//g' | grep -v "^file$" | head -n 1 `
+  
+  echo "Query Result: $RESULT"
   FILENAME=`echo "${RESULT##*/}"`
+  echo "Downloading to local file $FILENAME"
 
   # Run model download and extraction
   wget $RESULT
+
+  # Create directory
   mkdir $DIRECTORY;
-  tar -C $DIRECTORY -xvf $FILENAME
+
+  echo "Decompressing model"
+  tar -C $DIRECTORY -xf $MODEL_PATH/$FILENAME
 
   # Remove extra folder
   TMP=`ls $DIRECTORY`
-  mv $TMP/* .
-  rm -r $TMP
+  mv $DIRECTORY/$TMP/* $DIRECTORY
+  rm -r $DIRECTORY/$TMP
 
   # Remove the downloaded compressed model
   rm $FILENAME
