@@ -93,10 +93,10 @@ curl http://localhost:2222/rest/annotate \
 
 An option to stop the DBpedia Spotlight server is by the commands:
 
-     kill dbpedia-spotlight.[LANG]
+     docker stop dbpedia-spotlight.[LANG]
      docker rm dbpedia-spotlight.[LANG]
 
-The `docker kill` command will stop the running container and the `docker rm` command will remove the container. The `dbpedia-spotlight` corresponds to the name given with the `--name` option of the docker run command. 
+The `docker stop` command will stop the running container and the `docker rm` command will remove the container. The `dbpedia-spotlight` corresponds to the name given with the `--name` option of the docker run command. 
 
 
 ## Documentation
