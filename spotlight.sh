@@ -7,8 +7,8 @@ if [ -z ${JAVA_PARAMS+x} ]; then JAVA_PARAMS=-Xmx15G; fi
 echo "========================================="
 echo "NAME is set to '$NAME'"; 
 echo "MODEL_PATH is set to '$MODEL_PATH'"; 
+echo "DATABUS_SPARQL_ENDPOINT is set to '$DATABUS_SPARQL_ENDPOINT'"; 
 echo "QUERY is set to '$QUERY'"; 
-echo "QUERY is set to '$DATABUS_SPARQL_ENDPOINT'"; 
 echo "JAVA_PARAMS is set to '$JAVA_PARAMS'"; 
 echo "========================================="
 
@@ -25,7 +25,7 @@ else
   
   echo "Query Result: $RESULT"
   FILENAME=`echo "${RESULT##*/}"`
-  echo "Downloading to local file $FILENAME"
+  echo "Downloading to local file $FILENAME..."
 
   # Run model download and extraction
   wget $RESULT
@@ -33,7 +33,7 @@ else
   # Create directory
   mkdir $DIRECTORY;
 
-  echo "Decompressing model"
+  echo "Decompressing model..."
   tar -C $DIRECTORY -xf $MODEL_PATH/$FILENAME
 
   # Remove extra folder
