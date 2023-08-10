@@ -18,26 +18,33 @@ then
      fi
 
 else
-      QUERY="PREFIX dataid: <https://dataid.dbpedia.org/databus#>
-      PREFIX dataid-cv: <https://dataid.dbpedia.org/databus-cv#>
-      PREFIX dct: <http://purl.org/dc/terms/>
-      PREFIX dcat:  <http://www.w3.org/ns/dcat#>
-
-      SELECT DISTINCT ?file WHERE {
- 	?dataset dataid:artifact <https://databus.dbpedia.org/dbpedia/spotlight/spotlight-model> .
-	?dataset dcat:distribution ?distribution .
+      QUERY="PREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX dcat:   <http://www.w3.org/ns/dcat#>
+PREFIX dct:    <http://purl.org/dc/terms/>
+PREFIX dcv: <https://dataid.dbpedia.org/databus-cv#>
+PREFIX databus: <https://dataid.dbpedia.org/databus#>
+SELECT ?file WHERE
+{
+	GRAPH ?g
 	{
-		?distribution dct:hasVersion ?latestVersion 
+		?dataset databus:artifact <https://databus.dbpedia.org/dbpedia/spotlight/spotlight-model> .
 		{
-			SELECT (?version as ?latestVersion) WHERE { 
-				?dataset dataid:artifact <https://databus.dbpedia.org/dbpedia/spotlight/spotlight-model> . 
-				?dataset dct:hasVersion ?version . 
-			} ORDER BY DESC (?version) LIMIT 1 
+			?distribution dct:hasVersion ?version {
+				SELECT (?v as ?version) { 
+					GRAPH ?g2 { 
+						?dataset databus:artifact <https://databus.dbpedia.org/dbpedia/spotlight/spotlight-model> . 
+						?dataset dct:hasVersion ?v . 
+					}
+				} ORDER BY DESC (STR(?version)) LIMIT 1 
+			}
 		}
-                ?distribution dataid-cv:lang '$LANG' . 
+		{ ?distribution <https://dataid.dbpedia.org/databus-cv#lang> '$LANG' . }
+		?dataset dcat:distribution ?distribution .
+		?distribution databus:file ?file .
 	}
-	?distribution dcat:downloadURL ?file .
-       }"
+}"
+      
 
       RESULT=`curl --data-urlencode query="$QUERY" -H 'accept:text/tab-separated-values' https://databus.dbpedia.org/sparql | sed 's/"//g' | grep -v "^file$" | head -n 1`
       echo $RESULT
